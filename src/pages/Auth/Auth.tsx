@@ -15,7 +15,8 @@ const App: React.FC = () => {
 
   const onFinish = (/* values: LoginFormValues */) => {
     console.log('Sign in success');
-    navigate('/home')
+    localStorage.setItem('token', 'fake-token');
+    navigate('/home');
   };
 
   const onFinishFailed = () => {
