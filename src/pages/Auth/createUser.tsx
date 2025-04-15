@@ -28,7 +28,7 @@ const CreateUser: React.FC = () => {
   };
 
   return (
-    <div className="wrapper">
+    <div className="wrapper-signup">
       <div className="signup-container">
         
         <div className="logo-container">
