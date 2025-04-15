@@ -1,113 +1,113 @@
 @font-face {
   font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-Thin-BF6721a8b7b7b52.woff2') format('woff2');
+  src: url('./assets/fonts/AvanttTRIAL-Thin.woff2') format('woff2');
   font-weight: 100;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-ThinItalic-BF6721a8b7b7b52.woff2') format('woff2');
+  src: url('./assets/fonts/AvanttTRIAL-ThinItalic.woff2') format('woff2');
   font-weight: 100;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-ExtraBold-BF6721a8b7b7b52.woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-ExtraBoldItalic-BF6721a8b7b7b52.woff2') format('woff2');
-  font-weight: 800;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-Bold-BF6721a8b7b7b52.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-BoldItalic-BF6721a8b7b7b52.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-SemiBold-BF6721a8b7b7b52.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-SemiBoldItalic-BF6721a8b7b7b52.woff2') format('woff2');
-  font-weight: 600;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-Medium-BF6721a8b7b7b52.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-MediumItalic-BF6721a8b7b7b52.woff2') format('woff2');
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-Regular-BF6721a8b7b7b52.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-RegularItalic-BF6721a8b7b7b52.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-Light-BF6721a8b7b7b52.woff2') format('woff2');
+  src: url('./assets/fonts/AvanttTRIAL-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-LightItalic-BF6721a8b7b7b52.woff2') format('woff2');
+  src: url('./assets/fonts/AvanttTRIAL-LightItalic.woff2') format('woff2');
   font-weight: 300;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-Heavy-BF6721a8b7b7b52.woff2') format('woff2');
-  font-weight: 900;
+  src: url('./assets/fonts/AvanttTRIAL-Regular.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
+}
+@font-face {
+  font-family: 'Avantt';
+  src: url('./assets/fonts/AvanttTRIAL-RegularItalic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
 }
 
 @font-face {
   font-family: 'Avantt';
-  src: url('./assets/fonts/AvanttTRIAL-HeavyItalic-BF6721a8b7b7b52.woff2') format('woff2');
+  src: url('./assets/fonts/AvanttTRIAL-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avantt';
+  src: url('./assets/fonts/AvanttTRIAL-MediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avantt';
+  src: url('./assets/fonts/AvanttTRIAL-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avantt';
+  src: url('./assets/fonts/AvanttTRIAL-SemiBoldItalic.woff2') format('woff2');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avantt';
+  src: url('./assets/fonts/AvanttTRIAL-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avantt';
+  src: url('./assets/fonts/AvanttTRIAL-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avantt';
+  src: url('./assets/fonts/AvanttTRIAL-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avantt';
+  src: url('./assets/fonts/AvanttTRIAL-ExtraBoldItalic.woff2') format('woff2');
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avantt';
+  src: url('./assets/fonts/AvanttTRIAL-Heavy.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avantt';
+  src: url('./assets/fonts/AvanttTRIAL-HeavyItalic.woff2') format('woff2');
   font-weight: 900;
   font-style: italic;
+}
+
+/* VF = Variable Font */
+@font-face {
+  font-family: 'Avantt';
+  src: url('./assets/fonts/AvanttTRIALVF.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
 }
 
 body {
@@ -150,7 +150,7 @@ body {
 }
 
 .card {
-  padding: 2em;
+  padding: 2rem;
 }
 
 .read-the-docs {

@@ -1,0 +1,62 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: 'Avantt', sans-serif;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: 100vh; */
+}
+
+.login-container {
+  width: 400px;
+  max-width: 90%;
+  background: #fff;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.logo-container {
+  margin-bottom: 20px;
+}
+
+.logo {
+  height: 200px;
+  width: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+@media (max-width: 480px) {
+    .login-container {
+      width: 400px;
+      max-width: 90%;
+      background: #fff;
+      padding: 0rem;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+    }
+  
+    .logo {
+      height: 150px;
+    }
+  }
+  
