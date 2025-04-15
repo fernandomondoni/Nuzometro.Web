@@ -116,8 +116,8 @@ body {
 
 #root {
   max-width: 1280px;
-/*   margin: 0 auto;
-  padding: 2rem; */
+  margin: 0 auto;
+  padding: 2rem;
   text-align: center;
 }
 
@@ -150,7 +150,7 @@ body {
 }
 
 .card {
-  padding: 2em;
+  padding: 2rem;
 }
 
 .read-the-docs {
