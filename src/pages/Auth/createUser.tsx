@@ -23,13 +23,14 @@ const CreateUser: React.FC = () => {
       const data = await authService.signUp({
         username: values.username,
         password: values.password,
+        inviteCode: values.inviteCode,
       });
       message.success('Account created successfully!');
       if (data.token) {
         localStorage.setItem('token', data.token);
       }
-      localStorage.setItem('user', JSON.stringify({ username: values.username }));
-      navigate('/home');
+      //localStorage.setItem('user', JSON.stringify({ username: values.username }));
+      navigate('/login');
     } catch (err: any) {
       console.error('Sign-up failed:', err);
       message.error(err.message || 'Error creating user. Please try again.');
@@ -81,16 +82,7 @@ const CreateUser: React.FC = () => {
           <Form.Item
             label="Invitation Code"
             name="inviteCode"
-            rules={[
-              { required: true, message: 'Please enter the invitation code!' },
-              {
-                validator: (_, value) => {
-                  return value === 'bolsonaro13lula22'
-                    ? Promise.resolve()
-                    : Promise.reject(new Error('The invitation code is incorrect!'));
-                }
-              }
-            ]}
+            rules={[{ required: true, message: 'Please enter your invitation code!' }]}
           >
             <Input placeholder="Enter invitation code" />
           </Form.Item>

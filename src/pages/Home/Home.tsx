@@ -3,19 +3,21 @@
 import React, { useState } from "react";
 import { Layout, Button, message } from "antd";
 import { registerNu, getNu } from "../../services/nuService";
+import { useNavigate } from "react-router-dom";
 
 const { Content } = Layout;
 
 const Home: React.FC = () => {
   const [result, setResult] = useState<any>(null);
+  const navigate = useNavigate();
 
-  const username = "bozo";
+  const username = localStorage.getItem("username") || "";
 
   const handleRegisterNu = async () => {
     const payload = {
       user: username,
-      location: "bahia",
-      date: new Date().toISOString().split("T")[0], // ex: "2025-04-16"
+      location: "Bahia - Brazil",
+      date: new Date().toISOString().split("T")[0],
     };
 
     try {
@@ -54,6 +56,14 @@ const Home: React.FC = () => {
             {JSON.stringify(result, null, 2)}
           </pre>
         )}
+        <Button
+          type="default"
+          onClick={() => navigate(-1)}
+          style={{ marginTop: "1rem" }}
+          block
+        >
+          Back
+        </Button>
       </Content>
     </Layout>
   );

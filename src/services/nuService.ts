@@ -15,9 +15,9 @@ export const registerNu = async (payload: {
   return response.data;
 };
 
-export const getNu = async (username: string): Promise<Response> => {
+export const getNu = async (user: string): Promise<Response> => {
   const token = localStorage.getItem("id_token");
-  const response = await api.get(`/nu?user=${username}`, {
+  const response = await api.get(`/nu?user=${user}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -16,9 +16,10 @@ const App: React.FC = () => {
 
       console.log(result);
 
-      localStorage.setItem("access_token", result.AccessToken);
-      localStorage.setItem("id_token", result.IdToken);
-      localStorage.setItem("refresh_token", JSON.stringify(result.RefreshToken));
+      localStorage.setItem("access_token", result.tokens.access_token);
+      localStorage.setItem("id_token", result.tokens.id_token);
+      localStorage.setItem("refresh_token", (result.tokens.refresh_token));
+      localStorage.setItem("username", (result.username));
 
       message.success("Signed in successfully!");
       navigate("/home");

@@ -3,10 +3,10 @@ import api from './api';
 interface SignUpParams {
   username: string;
   password: string;
+  inviteCode?: string;
 }
 
-export const signUp = async ({ username, password }: SignUpParams) => {
-  const inviteCode = 'bolsonaro13lula22';
+export const signUp = async ({ username, password, inviteCode }: SignUpParams) => {
   try {
     const response = await api.post('/signup', {
       username,
