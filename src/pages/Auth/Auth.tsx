@@ -1,7 +1,8 @@
 import React from "react";
 import { Form, Input, Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import logoSvg from "../../assets/nuzometro.svg"; 
+import logoSvg from "../../assets/nuzometro.svg";
+import { login } from "../../services/authService";
 
 import "./Auth.css";
 
@@ -9,10 +10,22 @@ const App: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  const onFinish = () => {
-    console.log("Sign in success");
-    localStorage.setItem("token", "fake-token");
-    navigate("/home");
+  const onFinish = async (values: { username: string; password: string }) => {
+    try {
+      const result = await login(values);
+
+      console.log(result);
+
+      localStorage.setItem("access_token", result.AccessToken);
+      localStorage.setItem("id_token", result.IdToken);
+      localStorage.setItem("refresh_token", JSON.stringify(result.RefreshToken));
+
+      message.success("Signed in successfully!");
+      navigate("/home");
+    } catch (error: any) {
+      console.error(error);
+      message.error("Sign in failed. Please check your credentials.");
+    }
   };
 
   const onFinishFailed = () => {
@@ -29,19 +42,18 @@ const App: React.FC = () => {
           form={form}
           name="login"
           layout="vertical"
-          initialValues={{ email: "", password: "" }}
+          initialValues={{ username: "", password: "" }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
-            label="Email"
-            name="email"
+            label="Username"
+            name="username"
             rules={[
-              { required: true, message: "Please, input your email!" },
-              { type: "email", message: "The email inserted is not valid!" },
+              { required: true, message: "Please, input your username!" }
             ]}
           >
-            <Input placeholder="Input your email" />
+            <Input placeholder="Input your username" />
           </Form.Item>
 
           <Form.Item
