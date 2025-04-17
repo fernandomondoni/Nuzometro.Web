@@ -14,8 +14,12 @@ export const signUp = async ({ username, password, inviteCode }: SignUpParams) =
       invite_code: inviteCode,
     });
     return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'response' in error) {
+      const axiosError = error as { response?: { data?: any } };
+      throw axiosError.response?.data || error;
+    }
+    throw error;
   }
 };
 
