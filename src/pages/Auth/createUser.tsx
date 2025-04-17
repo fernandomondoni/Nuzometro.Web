@@ -1,36 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import logoSvg from "../../assets/nuzometro.svg"; 
+import logoSvg from "../../assets/nuzometro.svg";
+import authService from '../../services/userService';
 
 import "./createUser.css";
 
 const CreateUser: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   interface UserFormValues {
     username: string;
-    email: string;
     password: string;
     inviteCode: string;
   }
 
-  const onFinish = (values: UserFormValues) => {
-    console.log('User created successfully');
-    localStorage.setItem('token', 'fake-token');
-    localStorage.setItem('user', JSON.stringify(values));
-    navigate('/home');
+  const onFinish = async (values: UserFormValues) => {
+    setLoading(true);
+    try {
+      const data = await authService.signUp({
+        username: values.username,
+        password: values.password,
+        inviteCode: values.inviteCode,
+      });
+      message.success('Account created successfully!');
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+      }
+      //localStorage.setItem('user', JSON.stringify({ username: values.username }));
+      navigate('/login');
+    } catch (err: any) {
+      console.error('Sign-up failed:', err);
+      message.error(err.message || 'Error creating user. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onFinishFailed = () => {
-    message.error('Error to create account. Please verify the fields.');
+    message.error('Error creating account. Please check the fields.');
   };
 
   return (
     <div className="wrapper-signup">
       <div className="signup-container">
-        
         <div className="logo-container">
           <img src={logoSvg} alt="Logo" className="logo" />
         </div>
@@ -42,61 +57,49 @@ const CreateUser: React.FC = () => {
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
-            label="Name"
+            label="Username"
             name="username"
-            rules={[{ required: true, message: 'Please, provide your user name!' }]}
+            rules={[{ required: true, message: 'Please enter your username!' }]}
           >
-            <Input placeholder="Type your user name" />
+            <Input placeholder="Enter your username" />
           </Form.Item>
 
           <Form.Item
-            label="Email"
+            label="Email (disabled)"
             name="email"
-            rules={[
-              { required: true, message: 'Provide your email!' },
-              { type: 'email', message: 'This email is not valid!' }
-            ]}
           >
-            <Input placeholder="Type your email" />
+            <Input placeholder="Not used" disabled />
           </Form.Item>
 
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: 'Provide your password!' }]}
+            rules={[{ required: true, message: 'Please enter your password!' }]}
           >
-            <Input.Password placeholder="Type your password" />
+            <Input.Password placeholder="Enter your password" />
           </Form.Item>
 
           <Form.Item
             label="Invitation Code"
             name="inviteCode"
-            rules={[
-              { required: true, message: 'Please, enter your invitation code!' },
-              {
-                validator: (_, value) => {
-                  return value === 'bolsonaro13lula22'
-                    ? Promise.resolve()
-                    : Promise.reject(new Error('The invitation code is incorrect!'));
-                }
-              }
-            ]}
+            rules={[{ required: true, message: 'Please enter your invitation code!' }]}
           >
             <Input placeholder="Enter invitation code" />
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
-              Register and Sign up
+            <Button type="primary" htmlType="submit" block loading={loading}>
+              Register and Create Account
             </Button>
-            <Button 
-          type="default" 
-          onClick={() => navigate(-1)}
-          style={{ marginTop: '1rem' }}
-          block
-        >
-          Back
-        </Button>
+            <Button
+              type="default"
+              onClick={() => navigate(-1)}
+              style={{ marginTop: '1rem' }}
+              block
+              disabled={loading}
+            >
+              Back
+            </Button>
           </Form.Item>
         </Form>
       </div>

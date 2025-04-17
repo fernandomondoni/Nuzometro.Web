@@ -1,68 +1,70 @@
-import React, { useState } from 'react';
-import { Layout, Menu, Button } from 'antd';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
+import { Layout, Button, message } from "antd";
+import { registerNu, getNu } from "../../services/nuService";
+import { useNavigate } from "react-router-dom";
 
-const { Sider, Content } = Layout;
+const { Content } = Layout;
 
 const Home: React.FC = () => {
+  const [result, setResult] = useState<any>(null);
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(false);
 
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
+  const username = localStorage.getItem("username") || "";
+
+  const handleRegisterNu = async () => {
+    const payload = {
+      user: username,
+      location: "Bahia - Brazil",
+      date: new Date().toISOString().split("T")[0],
+    };
+
+    try {
+      const data = await registerNu(payload);
+      message.success("Nu registered successfully!");
+      setResult(data);
+    } catch (err) {
+      message.error("Failed to register Nu.");
+    }
   };
 
-  const items = [
-    { key: 'home', icon: <PieChartOutlined />, label: 'Home' },
-    { key: 'profile', icon: <DesktopOutlined />, label: 'Profile' },
-    { key: 'logout', icon: <SettingOutlined />, label: 'Logout' },
-  ];
-
-  const handleMenuClick = (e: { key: string }) => {
-    switch (e.key) {
-      case 'home':
-        navigate('/home');
-        break;
-      case 'profile':
-        navigate('/profile');
-        break;
-      case 'logout':
-        localStorage.removeItem('token');
-        navigate('/');
-        break;
-      default:
-        break;
+  const handleGetNu = async () => {
+    try {
+      const data = await getNu(username);
+      setResult(data);
+    } catch (err) {
+      message.error("Failed to fetch Nu.");
     }
   };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible collapsed={collapsed} trigger={null}>
-        <div style={{ padding: '16px' }}>
-          <Button type="primary" onClick={toggleCollapsed} style={{ marginBottom: 16 }}>
-            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          </Button>
-        </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['home']}
-          items={items}
-          onClick={handleMenuClick}
-        />
-      </Sider>
-      <Layout>
-        <Content style={{ padding: '24px' }}>
-          <h1 style={{ textAlign: 'center' }}>Nuzometro</h1>
-        </Content>
-      </Layout>
+    <Layout style={{ minHeight: "100vh" }}>
+      <Content style={{ padding: 24, textAlign: "center" }}>
+        <h1>Nuzometro</h1>
+        <Button
+          type="primary"
+          onClick={handleRegisterNu}
+          style={{ marginRight: 8 }}
+        >
+          Register Nu
+        </Button>
+        <Button onClick={handleGetNu}>Get Nu</Button>
+
+        {result && (
+          <pre style={{ textAlign: "left", marginTop: 16 }}>
+            {JSON.stringify(result, null, 2)}
+          </pre>
+        )}
+        <Button
+          type="default"
+          onClick={() => navigate(-1)}
+          style={{ marginTop: "1rem" }}
+          block
+        >
+          Back
+        </Button>
+      </Content>
     </Layout>
   );
 };
