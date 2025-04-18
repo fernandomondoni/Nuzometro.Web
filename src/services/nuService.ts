@@ -1,7 +1,7 @@
 import api from "./api";
 
 export const registerNu = async (payload: {
-  user: string;
+  username: string;
   location: string;
   date: string;
 }): Promise<Response> => {
@@ -15,9 +15,9 @@ export const registerNu = async (payload: {
   return response.data;
 };
 
-export const getNu = async (user: string): Promise<Response> => {
+export const getNu = async (username: string): Promise<Response> => {
   const token = localStorage.getItem("id_token");
-  const response = await api.get(`/nu?user=${user}`, {
+  const response = await api.get(`/nu?username=${username}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
