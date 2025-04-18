@@ -15,7 +15,7 @@ const Home: React.FC = () => {
 
   const handleRegisterNu = async () => {
     const payload = {
-      user: username,
+      username: username,
       location: "Bahia - Brazil",
       date: new Date().toISOString().split("T")[0],
     };

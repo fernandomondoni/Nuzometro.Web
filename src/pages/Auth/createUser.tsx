@@ -29,7 +29,6 @@ const CreateUser: React.FC = () => {
       if (data.token) {
         localStorage.setItem('token', data.token);
       }
-      //localStorage.setItem('user', JSON.stringify({ username: values.username }));
       navigate('/login');
     } catch (err: any) {
       console.error('Sign-up failed:', err);
