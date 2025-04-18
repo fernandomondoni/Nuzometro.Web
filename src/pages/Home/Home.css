@@ -1,0 +1,68 @@
+.home-wrapper {
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+  overflow-y: auto;
+  height: calc(100vh - 48px);
+}
+
+.scrollable-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.select-container {
+  margin-bottom: 16px;
+}
+
+.select {
+  width: 100%;
+}
+
+.nu-button {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.results {
+  margin-top: 24px;
+  overflow-y: auto;
+}
+
+.result-card {
+  margin-bottom: 16px;
+}
+
+.back-button {
+  margin-top: 24px;
+}
+
+.mute-button {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+@media screen and (max-width: 480px) {
+  .home-wrapper {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .result-card {
+    padding: 12px;
+  }
+
+  .nu-button,
+  .select {
+    font-size: 1rem;
+  }
+}
