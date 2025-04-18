@@ -22,7 +22,8 @@ const Home: React.FC = () => {
   const username = localStorage.getItem("username") || "";
 
   const playAudio = () => {
-    const audio = new Audio("../../../public/confirma-urna.mp3");
+    const audio = new Audio("/confirma-urna.mp3");
+    //const audio = new Audio("../../../public/confirma-urna.mp3");
     audio.play();
   };
 
