@@ -20,11 +20,13 @@ const Home: React.FC = () => {
   const [result, setResult] = useState<any>(null);
   const [location, setLocation] = useState<string>(locationOptions[0]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isMuted, setIsMuted] = useState(false);
   const navigate = useNavigate();
 
   const username = localStorage.getItem("username") || "";
 
   const playAudio = () => {
+    if (isMuted) return;
     const audio = new Audio("/confirma-urna.mp3");
     //const audio = new Audio("../../../public/confirma-urna.mp3");
     audio.play();
@@ -70,6 +72,15 @@ const Home: React.FC = () => {
         </div>
 
         <Button
+          type="default"
+          onClick={() => setIsMuted((prev) => !prev)}
+          className="mute-button"
+          style={{ marginBottom: 8 }}
+        >
+          {isMuted ? "Unmute" : "Mute"}
+        </Button>
+
+        <Button
           type="primary"
           onClick={handleRegisterAndFetchNu}
           loading={loading}
@@ -92,7 +103,7 @@ const Home: React.FC = () => {
                   {new Date(item.date).toLocaleDateString("pt-BR")}
                 </p>
                 <p>
-                  <strong>Total de horas:</strong> {item.amount}
+                  <strong>Total:</strong> {item.amount}
                 </p>
 
                 <Divider style={{ margin: "12px 0" }}>Registers</Divider>

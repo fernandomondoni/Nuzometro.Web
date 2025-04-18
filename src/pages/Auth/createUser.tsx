@@ -75,7 +75,14 @@ const CreateUser: React.FC = () => {
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: "Please enter your password!" }]}
+            rules={[
+              { required: true, message: "Please enter your password!" },
+              {
+                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
+                message:
+                  "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.",
+              },
+            ]}
           >
             <Input.Password placeholder="Enter your password" />
           </Form.Item>

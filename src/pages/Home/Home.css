@@ -43,6 +43,11 @@
   margin-top: 24px;
 }
 
+.mute-button {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
 @media screen and (max-width: 480px) {
   .home-wrapper {
     padding: 16px;
