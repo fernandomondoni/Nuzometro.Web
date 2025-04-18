@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Form, Input, Button, message } from "antd";
+import { useNavigate } from "react-router-dom";
 import logoSvg from "../../assets/nuzometro.svg";
-import authService from '../../services/userService';
+import authService from "../../services/userService";
 
 import "./createUser.css";
 
@@ -25,21 +25,26 @@ const CreateUser: React.FC = () => {
         password: values.password,
         inviteCode: values.inviteCode,
       });
-      message.success('Account created successfully!');
+      message.success("Account created successfully!");
       if (data.token) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem("token", data.token);
       }
-      navigate('/login');
-    } catch (err: any) {
-      console.error('Sign-up failed:', err);
-      message.error(err.message || 'Error creating user. Please try again.');
+      navigate("/login");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Sign-up failed:", err.message);
+        message.error(err.message || "Error creating user. Please try again.");
+      } else {
+        console.error("Unknown error during sign-up:", err);
+        message.error("Unexpected error. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const onFinishFailed = () => {
-    message.error('Error creating account. Please check the fields.');
+    message.error("Error creating account. Please check the fields.");
   };
 
   return (
@@ -58,22 +63,19 @@ const CreateUser: React.FC = () => {
           <Form.Item
             label="Username"
             name="username"
-            rules={[{ required: true, message: 'Please enter your username!' }]}
+            rules={[{ required: true, message: "Please enter your username!" }]}
           >
             <Input placeholder="Enter your username" />
           </Form.Item>
 
-          <Form.Item
-            label="Email (disabled)"
-            name="email"
-          >
+          <Form.Item label="Email (disabled)" name="email">
             <Input placeholder="Not used" disabled />
           </Form.Item>
 
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: 'Please enter your password!' }]}
+            rules={[{ required: true, message: "Please enter your password!" }]}
           >
             <Input.Password placeholder="Enter your password" />
           </Form.Item>
@@ -81,7 +83,9 @@ const CreateUser: React.FC = () => {
           <Form.Item
             label="Invitation Code"
             name="inviteCode"
-            rules={[{ required: true, message: 'Please enter your invitation code!' }]}
+            rules={[
+              { required: true, message: "Please enter your invitation code!" },
+            ]}
           >
             <Input placeholder="Enter invitation code" />
           </Form.Item>
@@ -93,7 +97,7 @@ const CreateUser: React.FC = () => {
             <Button
               type="default"
               onClick={() => navigate(-1)}
-              style={{ marginTop: '1rem' }}
+              style={{ marginTop: "1rem" }}
               block
               disabled={loading}
             >

@@ -20,17 +20,16 @@ body {
   justify-content: center;
   align-items: center;
   width: 88%;
-  /* height: 100vh; */
 }
 
 .login-container {
-    width: 424px;
-    max-width: 80%;
-    background: #fff;
-    padding: 2rem;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+  width: 424px;
+  max-width: 80%;
+  background: #fff;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
 }
 
 .logo-container {
