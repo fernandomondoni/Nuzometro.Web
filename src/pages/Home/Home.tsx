@@ -12,14 +12,9 @@ const locationOptions = [
   "JUDAS PRIEST",
 ];
 
-interface NuResult {
-  id: string;
-  value: string;
-  timestamp: string;
-}
-
 const Home: React.FC = () => {
-  const [result, setResult] = useState<NuResult | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [result, setResult] = useState<any>(null);
   const [location, setLocation] = useState<string>(locationOptions[0]);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -47,12 +42,9 @@ const Home: React.FC = () => {
 
       const data = await getNu(username);
       setResult(data);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        message.error(`Error: ${err.message}`);
-      } else {
-        message.error("An unexpected error occurred.");
-      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      message.error("Something went wrong while registering or fetching Nu.");
     } finally {
       setLoading(false);
     }
