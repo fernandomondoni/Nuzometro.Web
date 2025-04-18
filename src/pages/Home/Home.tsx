@@ -1,40 +1,60 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { Layout, Button, message } from "antd";
+import { Layout, Button, message, Select } from "antd";
 import { registerNu, getNu } from "../../services/nuService";
 import { useNavigate } from "react-router-dom";
 
 const { Content } = Layout;
+const { Option } = Select;
+
+const locationOptions = [
+  "MONSTERS OF ROCK",
+  "SAVATAGE & OPETH",
+  "JUDAS PRIEST",
+];
+
+interface NuResult {
+  id: string;
+  value: string;
+  timestamp: string;
+}
 
 const Home: React.FC = () => {
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<NuResult | null>(null);
+  const [location, setLocation] = useState<string>(locationOptions[0]);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const username = localStorage.getItem("username") || "";
 
-  const handleRegisterNu = async () => {
+  const playAudio = () => {
+    const audio = new Audio("../../../public/confirma-urna.mp3");
+    audio.play();
+  };
+
+  const handleRegisterAndFetchNu = async () => {
+    setLoading(true);
     const payload = {
-      username: username,
-      location: "Bahia - Brazil",
-      date: new Date().toISOString().split("T")[0],
+      username,
+      location,
+      date: new Date().toISOString(),
     };
 
     try {
-      const data = await registerNu(payload);
+      await registerNu(payload);
       message.success("Nu registered successfully!");
-      setResult(data);
-    } catch (err) {
-      message.error("Failed to register Nu.");
-    }
-  };
 
-  const handleGetNu = async () => {
-    try {
+      playAudio();
+
       const data = await getNu(username);
       setResult(data);
-    } catch (err) {
-      message.error("Failed to fetch Nu.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        message.error(`Error: ${err.message}`);
+      } else {
+        message.error("An unexpected error occurred.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,20 +62,36 @@ const Home: React.FC = () => {
     <Layout style={{ minHeight: "100vh" }}>
       <Content style={{ padding: 24, textAlign: "center" }}>
         <h1>Nuzometro</h1>
+
+        <div style={{ marginBottom: 16 }}>
+          <Select
+            value={location}
+            onChange={setLocation}
+            style={{ width: 240 }}
+          >
+            {locationOptions.map((loc) => (
+              <Option key={loc} value={loc}>
+                {loc}
+              </Option>
+            ))}
+          </Select>
+        </div>
+
         <Button
           type="primary"
-          onClick={handleRegisterNu}
-          style={{ marginRight: 8 }}
+          onClick={handleRegisterAndFetchNu}
+          loading={loading}
+          style={{ marginBottom: 16 }}
         >
-          Register Nu
+          NU
         </Button>
-        <Button onClick={handleGetNu}>Get Nu</Button>
 
         {result && (
           <pre style={{ textAlign: "left", marginTop: 16 }}>
             {JSON.stringify(result, null, 2)}
           </pre>
         )}
+
         <Button
           type="default"
           onClick={() => navigate(-1)}

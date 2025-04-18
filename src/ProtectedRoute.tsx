@@ -1,12 +1,12 @@
-import { JSX } from 'react';
-import { Navigate } from 'react-router-dom';
+import { JSX } from "react";
+import { Navigate } from "react-router-dom";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
 }
 
 const isAuthenticated = () => {
-  return localStorage.getItem('token') !== null;
+  return localStorage.getItem("token") !== null;
 };
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
