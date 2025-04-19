@@ -81,6 +81,14 @@ const Home: React.FC = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("username");
+    navigate("/login");
+  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Content className="home-wrapper scrollable-content">
@@ -169,7 +177,7 @@ const Home: React.FC = () => {
 
         <Button
           type="default"
-          onClick={() => navigate(-1)}
+          onClick={() => handleLogout()}
           className="back-button"
           block
         >

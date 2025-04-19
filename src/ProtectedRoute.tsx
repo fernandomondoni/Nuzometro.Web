@@ -6,13 +6,12 @@ interface ProtectedRouteProps {
 }
 
 const isAuthenticated = () => {
-  return localStorage.getItem("token") !== null;
+  return localStorage.getItem("access_token") !== null;
 };
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   if (!isAuthenticated()) {
     return <Navigate to="/login" replace />;
   }
-
   return children;
 };
