@@ -5,6 +5,8 @@ import Home from "./pages/Home/Home";
 import CreateUser from "./pages/Auth/createUser";
 import { ProtectedRoute } from "./ProtectedRoute";
 
+import "@ant-design/v5-patch-for-react-19";
+
 import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
