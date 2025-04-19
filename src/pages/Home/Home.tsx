@@ -11,6 +11,7 @@ import {
 } from "antd";
 import { registerNu, getNu } from "../../services/nuService";
 import { useNavigate } from "react-router-dom";
+import logoSvg from "../../assets/nuzometro.svg";
 
 import "./Home.css";
 
@@ -18,6 +19,7 @@ const { Content } = Layout;
 const { Option } = Select;
 
 const locationOptions = [
+  "SELECT",
   "MONSTERS OF ROCK",
   "SAVATAGE & OPETH",
   "JUDAS PRIEST",
@@ -61,6 +63,11 @@ const Home: React.FC = () => {
   }, []);
 
   const handleRegisterAndFetchNu = async () => {
+    if (location === "SELECT") {
+      message.warning("Please, select a valid option.");
+      return;
+    }
+
     setLoading(true);
     const payload = {
       username,
@@ -92,12 +99,20 @@ const Home: React.FC = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Content className="home-wrapper scrollable-content">
-        <h1 className="title">Nuzometro</h1>
+        <div className="title-container">
+          <img src={logoSvg} alt="nuzometro" className="title-icon" />
+        </div>
 
         {initialLoading ? (
-          <div style={{ textAlign: "center", marginTop: 32 }}>
-            <Spin tip="Loading results..." />
-          </div>
+          <Spin tip="Loading results...">
+            <div
+              style={{
+                padding: 24,
+                backgroundColor: "#f2f2f2",
+                borderRadius: 8,
+              }}
+            ></div>
+          </Spin>
         ) : (
           <>
             <div className="select-container">
@@ -128,6 +143,7 @@ const Home: React.FC = () => {
               onClick={handleRegisterAndFetchNu}
               loading={loading}
               className="nu-button"
+              disabled={location === "SELECT"}
             >
               NU
             </Button>

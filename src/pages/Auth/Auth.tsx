@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Button, message } from "antd";
+import { Form, Input, Button, message, Tooltip } from "antd";
 import { Navigate, useNavigate } from "react-router-dom";
 import logoSvg from "../../assets/nuzometro.svg";
 import { login } from "../../services/authService";
@@ -95,6 +95,14 @@ const App: React.FC = () => {
               Sign up
             </Button>
           </Form.Item>
+
+          <div style={{ textAlign: "center", marginTop: 8 }}>
+            <Tooltip title="Developers: Rafes, Pedro, Beira e Nathan">
+              <span style={{ cursor: "pointer", color: "rgba(0,0,0,0.45)" }}>
+                v1
+              </span>
+            </Tooltip>
+          </div>
         </Form>
       </div>
     </div>
