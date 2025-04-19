@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, message, Alert } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import logoSvg from "../../assets/nuzometro.svg";
 import authService from "../../services/userService";
@@ -37,6 +37,7 @@ const CreateUser: React.FC = () => {
       const msg = err.message || "Error creating user. Please try again.";
       console.error("Sign-up failed:", msg);
       setError(msg);
+      message.error(msg);
     } finally {
       setLoading(false);
     }
@@ -56,21 +57,6 @@ const CreateUser: React.FC = () => {
 
   return (
     <div className="wrapper-signup">
-      {error && (
-        <Alert
-          type="error"
-          message={error}
-          style={{
-            position: "fixed",
-            top: 20,
-            left: 0,
-            right: 0,
-            margin: "1rem",
-            zIndex: 1000,
-          }}
-        />
-      )}
-
       <div className="signup-container">
         <div className="logo-container">
           <img src={logoSvg} alt="Logo" className="logo" />

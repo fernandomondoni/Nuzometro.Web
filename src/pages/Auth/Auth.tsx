@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, message, Tooltip, Alert } from "antd";
+import { Form, Input, Button, message, Tooltip } from "antd";
 import { Navigate, useNavigate } from "react-router-dom";
 import logoSvg from "../../assets/nuzometro.svg";
 import { login } from "../../services/authService";
@@ -55,20 +55,6 @@ const App: React.FC = () => {
 
   return (
     <>
-      {error && (
-        <Alert
-          type="error"
-          message={error}
-          style={{
-            position: "fixed",
-            top: 20,
-            left: 0,
-            right: 0,
-            margin: "1rem",
-            zIndex: 1000,
-          }}
-        />
-      )}
       <div className="wrapper">
         <div className="login-container">
           <div className="logo-container">

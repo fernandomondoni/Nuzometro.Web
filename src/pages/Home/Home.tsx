@@ -8,8 +8,7 @@ import {
   List,
   Divider,
   Spin,
-  Alert,
-} from "antd";
+ } from "antd";
 import { registerNu, getNu } from "../../services/nuService";
 import { useNavigate } from "react-router-dom";
 import logoSvg from "../../assets/nuzometro.svg";
@@ -114,21 +113,6 @@ const Home: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      {error && (
-        <Alert
-          type="error"
-          message={error}
-          style={{
-            position: "fixed",
-            top: 20,
-            left: 0,
-            right: 0,
-            margin: "1rem",
-            zIndex: 1000,
-          }}
-        />
-      )}
-
       <Content className="home-wrapper scrollable-content">
         <div className="title-container">
           <img src={logoSvg} alt="nuzometro" className="title-icon" />
