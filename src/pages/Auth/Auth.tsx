@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button, message } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import logoSvg from "../../assets/nuzometro.svg";
 import { login } from "../../services/authService";
 
@@ -41,6 +41,10 @@ const App: React.FC = () => {
   const onFinishFailed = () => {
     message.error("Error at sign in. Verify your credentials.");
   };
+
+  if (localStorage.getItem("access_token")) {
+    return <Navigate to="/home" replace />;
+  }
 
   return (
     <div className="wrapper">
