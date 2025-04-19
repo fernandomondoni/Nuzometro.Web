@@ -50,6 +50,18 @@
   padding: 1rem;
 }
 
+.title-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  align-self: center;
+}
+
+.title-icon {
+  width: 200px;
+  height: auto;
+}
+
 @media screen and (max-width: 480px) {
   .home-wrapper {
     padding: 16px;
