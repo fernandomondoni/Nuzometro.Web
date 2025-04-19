@@ -8,6 +8,7 @@ import {
   List,
   Divider,
   Spin,
+  Alert,
 } from "antd";
 import { registerNu, getNu } from "../../services/nuService";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +34,7 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [initialLoading, setInitialLoading] = useState<boolean>(true);
   const [isMuted, setIsMuted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const username = localStorage.getItem("username") || "";
@@ -44,13 +46,16 @@ const Home: React.FC = () => {
   };
 
   const fetchResults = async () => {
+    setError(null);
     setLoading(true);
     try {
       const data = await getNu(username);
       setResult(data);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      message.error("Failed to load results.");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      const msg = err.message || "Failed to load results.";
+      setError(msg);
+      message.error(msg);
     } finally {
       setLoading(false);
       setInitialLoading(false);
@@ -62,12 +67,20 @@ const Home: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   const handleRegisterAndFetchNu = async () => {
     if (location === "SELECT") {
       message.warning("Please, select a valid option.");
       return;
     }
 
+    setError(null);
     setLoading(true);
     const payload = {
       username,
@@ -80,9 +93,12 @@ const Home: React.FC = () => {
       message.success("Nu registered successfully!");
       playAudio();
       await fetchResults();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      message.error("Something went wrong while registering or fetching Nu.");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      const msg =
+        err.message || "Something went wrong while registering or fetching Nu.";
+      setError(msg);
+      message.error(msg);
     } finally {
       setLoading(false);
     }
@@ -98,6 +114,21 @@ const Home: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
+      {error && (
+        <Alert
+          type="error"
+          message={error}
+          style={{
+            position: "fixed",
+            top: 20,
+            left: 0,
+            right: 0,
+            margin: "1rem",
+            zIndex: 1000,
+          }}
+        />
+      )}
+
       <Content className="home-wrapper scrollable-content">
         <div className="title-container">
           <img src={logoSvg} alt="nuzometro" className="title-icon" />
@@ -193,7 +224,7 @@ const Home: React.FC = () => {
 
         <Button
           type="default"
-          onClick={() => handleLogout()}
+          onClick={handleLogout}
           className="back-button"
           block
         >

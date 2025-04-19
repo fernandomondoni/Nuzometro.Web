@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Form, Input, Button, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, Button, message, Alert } from "antd";
 import { useNavigate } from "react-router-dom";
 import logoSvg from "../../assets/nuzometro.svg";
 import authService from "../../services/userService";
@@ -10,6 +10,7 @@ const CreateUser: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   interface UserFormValues {
     username: string;
@@ -18,6 +19,7 @@ const CreateUser: React.FC = () => {
   }
 
   const onFinish = async (values: UserFormValues) => {
+    setError(null);
     setLoading(true);
     try {
       const data = await authService.signUp({
@@ -30,25 +32,45 @@ const CreateUser: React.FC = () => {
         localStorage.setItem("token", data.token);
       }
       navigate("/login");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error("Sign-up failed:", err.message);
-        message.error(err.message || "Error creating user. Please try again.");
-      } else {
-        console.error("Unknown error during sign-up:", err);
-        message.error("Unexpected error. Please try again.");
-      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      const msg = err.message || "Error creating user. Please try again.";
+      console.error("Sign-up failed:", msg);
+      setError(msg);
     } finally {
       setLoading(false);
     }
   };
 
   const onFinishFailed = () => {
-    message.error("Error creating account. Please check the fields.");
+    const msg = "Error creating account. Please check the fields.";
+    message.error(msg);
   };
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   return (
     <div className="wrapper-signup">
+      {error && (
+        <Alert
+          type="error"
+          message={error}
+          style={{
+            position: "fixed",
+            top: 20,
+            left: 0,
+            right: 0,
+            margin: "1rem",
+            zIndex: 1000,
+          }}
+        />
+      )}
+
       <div className="signup-container">
         <div className="logo-container">
           <img src={logoSvg} alt="Logo" className="logo" />
