@@ -8,7 +8,7 @@ import {
   List,
   Divider,
   Spin,
- } from "antd";
+} from "antd";
 import { registerNu, getNu } from "../../services/nuService";
 import { useNavigate } from "react-router-dom";
 import logoSvg from "../../assets/nuzometro.svg";
@@ -18,10 +18,7 @@ import "./Home.css";
 const { Content } = Layout;
 const { Option } = Select;
 
-const locationOptions = [
-  "SELECT",
-  "E OUTROS",
-];
+const locationOptions = ["SELECT", "E OUTROS"];
 
 const Home: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -128,6 +125,14 @@ const Home: React.FC = () => {
         ) : (
           <>
             <div className="select-container">
+              <Button
+                type="default"
+                onClick={handleLogout}
+                className="back-button"
+                block
+              >
+                Logout
+              </Button>
               <Select
                 value={location}
                 onChange={setLocation}
@@ -202,15 +207,6 @@ const Home: React.FC = () => {
             )}
           </>
         )}
-
-        <Button
-          type="default"
-          onClick={handleLogout}
-          className="back-button"
-          block
-        >
-          Logout
-        </Button>
       </Content>
     </Layout>
   );

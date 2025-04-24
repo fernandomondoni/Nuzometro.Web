@@ -36,12 +36,13 @@
 }
 
 .result-card {
-  margin-bottom: 16px;
+  margin-bottom: 38px;
 }
 
 .back-button {
-  margin-top: 24px;
+  margin-bottom: 24px;
   padding: 1rem;
+  background-color: #b23b3b;
 }
 
 .mute-button {
@@ -72,7 +73,7 @@
   }
 
   .result-card {
-    padding: 12px;
+    padding: 38px;
   }
 
   .nu-button,
