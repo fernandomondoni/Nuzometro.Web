@@ -63,6 +63,10 @@
   height: auto;
 }
 
+.play-audio-button .anticon {
+  color: white;
+}
+
 @media screen and (max-width: 480px) {
   .home-wrapper {
     padding: 16px;
