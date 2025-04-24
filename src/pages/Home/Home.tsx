@@ -20,9 +20,6 @@ const { Option } = Select;
 
 const locationOptions = [
   "SELECT",
-  "MONSTERS OF ROCK",
-  "SAVATAGE & OPETH",
-  "JUDAS PRIEST",
   "E OUTROS",
 ];
 
