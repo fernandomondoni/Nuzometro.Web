@@ -9,6 +9,7 @@ import {
   Divider,
   Spin,
 } from "antd";
+import { StarFilled } from "@ant-design/icons";
 import { registerNu, getNu } from "../../services/nuService";
 import { useNavigate } from "react-router-dom";
 import logoSvg from "../../assets/nuzometro.svg";
@@ -200,6 +201,19 @@ const Home: React.FC = () => {
                       )}
                       bordered
                       size="small"
+                    />
+
+                    <Button
+                      type="default"
+                      shape="round"
+                      icon={<StarFilled />}
+                      onClick={playAudio}
+                      className="play-audio-button"
+                      style={{
+                        marginTop: 20,
+                        marginLeft: 75,
+                        backgroundColor: "#e4142c",
+                      }}
                     />
                   </Card>
                 ))}
