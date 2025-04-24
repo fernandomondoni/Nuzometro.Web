@@ -1,4 +1,5 @@
 import axios from "axios";
+import { refreshToken } from "./authService";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -14,6 +15,29 @@ api.interceptors.request.use(
     return config;
   },
   (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const newAccessToken = await refreshToken();
+
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+
+        return api(originalRequest);
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError);
+        window.location.href = "/login";
+      }
+    }
+
+    return Promise.reject(error);
+  }
 );
 
 export default api;
