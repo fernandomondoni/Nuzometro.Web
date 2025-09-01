@@ -1,5 +1,3 @@
-import React from "react";
-
 export const Icons = {
   Home: () => <span style={{ fontSize: "1.2em" }}>🏠</span>,
   Calculator: () => <span style={{ fontSize: "1.2em" }}>🧮</span>,

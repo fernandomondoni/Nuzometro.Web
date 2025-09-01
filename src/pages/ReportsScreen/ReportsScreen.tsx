@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardContent,
@@ -12,7 +11,7 @@ interface ReportsScreenProps {
   username: string;
 }
 
-export function ReportsScreen({ username }: ReportsScreenProps) {
+export function ReportsScreen({}: /* username */ ReportsScreenProps) {
   const stats = [
     {
       label: "Total de Registros",
@@ -87,7 +86,9 @@ export function ReportsScreen({ username }: ReportsScreenProps) {
           </CardHeader>
           <CardContent>
             <div className="text-center py-8 text-muted-foreground">
-              <Icons.BarChart className="w-12 h-12 mx-auto mb-4 opacity-50" />
+              <span className="w-12 h-12 mx-auto mb-4 opacity-50 flex items-center justify-center">
+                <Icons.BarChart />
+              </span>
               <p>Relatórios detalhados em desenvolvimento</p>
               <p className="text-sm mt-2">
                 Em breve você terá acesso a gráficos e análises avançadas
