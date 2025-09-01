@@ -1,3 +1,5 @@
+import NuzometroSvg from "../../assets/nuzometro.svg"; // Make sure this path is correct
+
 interface LogoProps {
   size?: "sm" | "md" | "lg";
   className?: string;
@@ -12,11 +14,13 @@ export function Logo({ size = "md", className = "" }: LogoProps) {
 
   return (
     <div
-      className={`${sizeClasses[size]} ${className} flex items-center justify-center bg-primary rounded-full transition-colors duration-300`}
+      className={`${sizeClasses[size]} ${className} flex items-center justify-center transition-colors duration-300`}
     >
-      <div className="text-primary-foreground font-bold text-lg transition-colors duration-300">
-        LOGO
-      </div>
+      <img
+        src={NuzometroSvg}
+        alt="Nuzometro Logo"
+        className="w-full h-full object-contain"
+      />
     </div>
   );
 }

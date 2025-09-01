@@ -12,7 +12,7 @@ export function BottomNavigation({
   const navItems = [
     { id: "home", label: "Início", icon: Icons.Home },
     { id: "counter", label: "Contador", icon: Icons.Calculator },
-    { id: "reports", label: "Relatórios", icon: Icons.BarChart },
+    /* { id: "reports", label: "Relatórios", icon: Icons.BarChart }, */
     { id: "settings", label: "Config", icon: Icons.Settings },
   ];
 

@@ -135,7 +135,7 @@ export function SettingsScreen({
           </CardHeader>
           <CardContent>
             <div className="text-center py-4 text-muted-foreground">
-              <p className="text-sm">Sistema de Contagem de Eventos</p>
+              <p className="text-sm">Nuzometro</p>
               <p className="text-xs mt-1">Versão 1.0.0</p>
             </div>
           </CardContent>

@@ -260,6 +260,11 @@
     display: inline-block;
     fill: currentColor;
   }
+
+  /* Prevent scroll on hover effects */
+  .hover-transform-container {
+    overflow: hidden;
+  }
 }
 
 /**
