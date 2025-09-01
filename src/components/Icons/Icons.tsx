@@ -1,14 +1,11 @@
 import React from "react";
 
-// Ícones simples usando Unicode e SVG inline
 export const Icons = {
-  // Ícones básicos usando Unicode
   Home: () => <span style={{ fontSize: "1.2em" }}>🏠</span>,
   Calculator: () => <span style={{ fontSize: "1.2em" }}>🧮</span>,
   BarChart: () => <span style={{ fontSize: "1.2em" }}>📊</span>,
   Settings: () => <span style={{ fontSize: "1.2em" }}>⚙️</span>,
 
-  // Ícones SVG inline simples
   Eye: ({ className }: { className?: string }) => (
     <svg
       className={className}
