@@ -2,7 +2,10 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <meta name="description" content="Nuzometro" />
     <meta name="theme-color" content="#030213" />
     <title>Nuzometro</title>
@@ -11,11 +14,42 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Contador de Eventos" />
+    <meta name="apple-mobile-web-app-title" content="Nuzometro" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/nuzometro-icon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Zoom Control Script -->
+    <script>
+      window.toggleZoom = function (enable = false) {
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (enable) {
+          viewport.setAttribute(
+            "content",
+            "width=device-width, initial-scale=1.0"
+          );
+        } else {
+          viewport.setAttribute(
+            "content",
+            "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          );
+        }
+      };
+
+      window.isZoomEnabled = function () {
+        const viewport = document.querySelector('meta[name="viewport"]');
+        const content = viewport.getAttribute("content");
+        return !content.includes("user-scalable=no");
+      };
+
+      window.zoomControl = {
+        enable: () => window.toggleZoom(true),
+        disable: () => window.toggleZoom(false),
+        toggle: () => window.toggleZoom(!window.isZoomEnabled()),
+        isEnabled: () => window.isZoomEnabled(),
+      };
+    </script>
   </head>
   <body>
     <div id="root"></div>

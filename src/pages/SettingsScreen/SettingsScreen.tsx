@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -9,6 +9,7 @@ import { Switch } from "../../components/Switch/Switch";
 import { Button } from "../../components/Button/Button";
 import { Logo } from "../../components/Logo/Logo";
 import { Icons } from "../../components/Icons/Icons";
+import { ZoomControl } from "../../components/ZoomControl";
 
 interface SettingsScreenProps {
   username: string;
@@ -23,8 +24,53 @@ export function SettingsScreen({
   isDarkMode,
   onDarkModeToggle,
 }: SettingsScreenProps) {
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    try {
+      const saved = localStorage.getItem("urnaSound");
+      return saved ? JSON.parse(saved) : true;
+    } catch {
+      return true;
+    }
+  });
+
+  const handleSoundToggle = (enabled: boolean) => {
+    setSoundEnabled(enabled);
+    try {
+      localStorage.setItem("urnaSound", JSON.stringify(enabled));
+
+      window.dispatchEvent(
+        new CustomEvent("urnaSound-changed", {
+          detail: { enabled },
+        })
+      );
+
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "urnaSound",
+          newValue: JSON.stringify(enabled),
+          oldValue: JSON.stringify(!enabled),
+        })
+      );
+    } catch (error) {
+      console.error("Erro ao salvar configuração de som:", error);
+    }
+  };
+
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "urnaSound" && e.newValue !== null) {
+        try {
+          const enabled = JSON.parse(e.newValue);
+          setSoundEnabled(enabled);
+        } catch (error) {
+          console.error("Erro ao sincronizar configuração de som:", error);
+        }
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -40,7 +86,7 @@ export function SettingsScreen({
       </div>
 
       {/* Content */}
-      <div className="p-4 pb-20 space-y-6">
+      <div className="p-4 pb-24 space-y-6">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
@@ -61,23 +107,24 @@ export function SettingsScreen({
               </div>
               <Switch
                 checked={soundEnabled}
-                onCheckedChange={setSoundEnabled}
+                onCheckedChange={handleSoundToggle}
               />
             </div>
 
-            <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
+            <div className="flex items-center justify-between p-3 rounded-lg opacity-50 cursor-not-allowed">
               <div className="flex items-center space-x-3">
-                <Icons.Bell className="w-5 h-5 text-muted-foreground" />
+                <Icons.Bell className="w-5 h-5 text-gray-400" />
                 <div>
-                  <p>Notificações</p>
-                  <p className="text-sm text-muted-foreground">
-                    Receber alertas do sistema
+                  <p className="text-gray-500">Notificações</p>
+                  <p className="text-sm text-gray-400">
+                    Receber alertas do sistema (em breve)
                   </p>
                 </div>
               </div>
               <Switch
-                checked={notificationsEnabled}
-                onCheckedChange={setNotificationsEnabled}
+                checked={false}
+                onCheckedChange={() => {}}
+                disabled={true}
               />
             </div>
 
@@ -92,6 +139,19 @@ export function SettingsScreen({
                 </div>
               </div>
               <Switch checked={isDarkMode} onCheckedChange={onDarkModeToggle} />
+            </div>
+
+            <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
+              <div className="flex items-center space-x-3">
+                <Icons.ZoomIn className="w-5 h-5 text-muted-foreground" />
+                <div>
+                  <p>Zoom no Mobile</p>
+                  <p className="text-sm text-muted-foreground">
+                    Permitir zoom por gestos
+                  </p>
+                </div>
+              </div>
+              <ZoomControl />
             </div>
           </CardContent>
         </Card>
@@ -136,7 +196,10 @@ export function SettingsScreen({
           <CardContent>
             <div className="text-center py-4 text-muted-foreground">
               <p className="text-sm">Nuzometro</p>
-              <p className="text-xs mt-1">Versão 1.0.0</p>
+              <p className="text-xs mt-1">Versão 2.0.0</p>
+              <p className="text-xs mt-1">
+                Feito por: Rafes, Pedro, Beira, Nathan
+              </p>
             </div>
           </CardContent>
         </Card>

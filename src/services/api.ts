@@ -32,7 +32,13 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         console.error("Error refreshing token:", refreshError);
-        window.location.href = "/login";
+
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("id_token");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("username");
+
+        // window.location.href = "/login";
       }
     }
 

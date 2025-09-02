@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { Button } from "../../components/Button/Button";
 import {
   Card,
   CardContent,
@@ -9,15 +11,31 @@ import { Icons } from "../../components/Icons/Icons";
 
 interface HomeScreenProps {
   onNavigate: (screen: string) => void;
+  onLogout: () => void;
   username: string;
 }
 
-export function HomeScreen({ onNavigate, username }: HomeScreenProps) {
+export function HomeScreen({
+  onNavigate,
+  username,
+  onLogout,
+}: HomeScreenProps) {
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await onLogout();
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
   const menuOptions = [
     {
       id: "counter",
-      title: "Contador",
-      description: "Registrar contagem de eventos",
+      title: "Nú Counter",
+      description: "Registrar Nú em eventos/shows",
       icon: Icons.Calculator,
       color: "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400",
     },
@@ -49,12 +67,28 @@ export function HomeScreen({ onNavigate, username }: HomeScreenProps) {
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-primary text-primary-foreground p-4 transition-colors duration-300">
-        <div className="flex items-center space-x-4">
-          <Logo size="sm" />
-          <div>
-            <h1>Nuzometro</h1>
-            <p className="opacity-80">Bem-vindo, {username}</p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Logo size="sm" />
+            <div>
+              <h1>Nuzometro</h1>
+              <p className="opacity-80">Bem-vindo, {username}</p>
+            </div>
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="bg-white text-red-600 border-red-600 hover:bg-red-50 disabled:opacity-50"
+          >
+            {isLoggingOut ? (
+              <Icons.Loader className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Icons.Logout className="h-4 w-4 mr-2" />
+            )}
+            {isLoggingOut ? "Saindo..." : "Sair"}
+          </Button>
         </div>
       </div>
 
