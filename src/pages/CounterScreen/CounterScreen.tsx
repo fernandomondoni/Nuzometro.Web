@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "../../components/Button/Button";
 import {
   Card,
@@ -16,7 +16,14 @@ import {
 import { Logo } from "../../components/Logo/Logo";
 import { Icons } from "../../components/Icons/Icons";
 import { Badge } from "../../components/Badge/Badge";
-import { registerNu, getNu } from "../../services/nuService";
+import { Alert, AlertDescription } from "../../components/Alert/Alert";
+import {
+  registerNu,
+  getNu,
+  getLocations,
+  addLocation,
+} from "../../services/nuService";
+import { Input } from "../../components/Input/Input";
 
 interface CounterScreenProps {
   username: string;
@@ -57,9 +64,70 @@ export function CounterScreen({ username, onLogout }: CounterScreenProps) {
   const [nuResult, setNuResult] = useState<NuResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [locations, setLocations] = useState<string[]>(["E OUTROS"]);
+  const [locationsLoading, setLocationsLoading] = useState(false);
+  const [newLocation, setNewLocation] = useState("");
+  const [eventDate, setEventDate] = useState("");
+  const [addingLocation, setAddingLocation] = useState(false);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [alertType, setAlertType] = useState<"success" | "error">("success");
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const events = [{ value: "E Outros", label: "E Outros" }];
+  const showAlert = (
+    message: string,
+    type: "success" | "error" = "success"
+  ) => {
+    setAlertMessage(message);
+    setAlertType(type);
+    setTimeout(() => setAlertMessage(null), 5000);
+  };
+
+  const fetchLocations = useCallback(async () => {
+    setLocationsLoading(true);
+    try {
+      const data = await getLocations();
+      const apiItems = data.items || [];
+      const allLocations = ["E OUTROS", ...apiItems];
+      setLocations(allLocations);
+    } catch (err: any) {
+      console.error("Erro ao buscar locations:", err);
+      setLocations(["E OUTROS"]);
+    } finally {
+      setLocationsLoading(false);
+    }
+  }, []);
+
+  const handleAddLocation = async () => {
+    if (!newLocation.trim()) {
+      showAlert("Digite um nome para o local!", "error");
+      return;
+    }
+
+    if (!eventDate.trim()) {
+      showAlert("Selecione a data do evento!", "error");
+      return;
+    }
+
+    if (locations.includes(newLocation.trim())) {
+      showAlert("Este local já existe!", "error");
+      return;
+    }
+
+    setAddingLocation(true);
+    try {
+      await addLocation(newLocation.trim(), eventDate);
+      setLocations((prev) => [...prev, newLocation.trim()]);
+      setNewLocation("");
+      setEventDate("");
+      showAlert("Local adicionado com sucesso!", "success");
+    } catch (err: any) {
+      const msg = err.message || "Erro ao adicionar local.";
+      showAlert(msg, "error");
+      console.error("Erro ao adicionar location:", err);
+    } finally {
+      setAddingLocation(false);
+    }
+  };
 
   const playUrnaSound = () => {
     if (!isMuted && audioRef.current) {
@@ -113,7 +181,7 @@ export function CounterScreen({ username, onLogout }: CounterScreenProps) {
     }
   }; */
 
-  const fetchNuResults = async () => {
+  const fetchNuResults = useCallback(async () => {
     setError(null);
     setLoading(true);
     try {
@@ -126,11 +194,12 @@ export function CounterScreen({ username, onLogout }: CounterScreenProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [username]);
 
   useEffect(() => {
     fetchNuResults();
-  }, [username]);
+    fetchLocations();
+  }, [fetchNuResults, fetchLocations]);
 
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
@@ -170,7 +239,7 @@ export function CounterScreen({ username, onLogout }: CounterScreenProps) {
 
   const handleRegisterNu = async () => {
     if (!selectedEvent) {
-      alert("Selecione um evento primeiro!");
+      showAlert("Selecione um evento primeiro!", "error");
       return;
     }
 
@@ -179,7 +248,7 @@ export function CounterScreen({ username, onLogout }: CounterScreenProps) {
 
     const payload = {
       username,
-      location: "E OUTROS",
+      location: selectedEvent,
       date: new Date().toISOString(),
     };
 
@@ -193,8 +262,7 @@ export function CounterScreen({ username, onLogout }: CounterScreenProps) {
       const now = new Date();
       const newRecord: CountRecord = {
         id: Date.now().toString(),
-        event:
-          events.find((e) => e.value === selectedEvent)?.label || selectedEvent,
+        event: selectedEvent,
         user: username,
         date: now.toLocaleDateString("pt-BR"),
         time: now.toLocaleTimeString("pt-BR"),
@@ -207,7 +275,7 @@ export function CounterScreen({ username, onLogout }: CounterScreenProps) {
       const msg = err.message || "Erro ao registrar Nu.";
       setError(msg);
       console.error("Erro ao registrar Nu:", msg);
-      alert(msg);
+      showAlert(msg, "error");
     } finally {
       setLoading(false);
     }
@@ -237,23 +305,78 @@ export function CounterScreen({ username, onLogout }: CounterScreenProps) {
       </div>
 
       <div className="p-4 pb-24 space-y-6">
+        {alertMessage && (
+          <Alert
+            variant={alertType === "error" ? "destructive" : "default"}
+            className="animate-in slide-in-from-top-2 duration-300"
+          >
+            <AlertDescription>{alertMessage}</AlertDescription>
+          </Alert>
+        )}
+
         <Card>
           <CardHeader>
             <CardTitle>Selecionar Evento</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Select value={selectedEvent} onValueChange={setSelectedEvent}>
+            <Select
+              value={selectedEvent}
+              onValueChange={setSelectedEvent}
+              disabled={locationsLoading}
+            >
               <SelectTrigger>
-                <SelectValue placeholder="Escolha um evento ou show" />
+                <SelectValue
+                  placeholder={
+                    locationsLoading
+                      ? "Carregando eventos..."
+                      : "Escolha um evento ou show"
+                  }
+                />
               </SelectTrigger>
               <SelectContent>
-                {events.map((event) => (
-                  <SelectItem key={event.value} value={event.value}>
-                    {event.label}
+                {locationsLoading ? (
+                  <SelectItem value="loading" disabled>
+                    Carregando...
                   </SelectItem>
-                ))}
+                ) : (
+                  locations.map((location) => (
+                    <SelectItem key={location} value={location}>
+                      {location}
+                    </SelectItem>
+                  ))
+                )}
               </SelectContent>
             </Select>
+
+            <div className="border-t pt-4">
+              <h4 className="text-sm font-medium mb-2">Adicionar novo local</h4>
+              <div className="space-y-2">
+                <Input
+                  placeholder="Nome do novo local"
+                  value={newLocation}
+                  onChange={(e) => setNewLocation(e.target.value)}
+                  disabled={addingLocation}
+                />
+                <Input
+                  type="date"
+                  placeholder="Data do evento"
+                  value={eventDate}
+                  onChange={(e) => setEventDate(e.target.value)}
+                  disabled={addingLocation}
+                />
+                <Button
+                  onClick={handleAddLocation}
+                  disabled={
+                    addingLocation || !newLocation.trim() || !eventDate.trim()
+                  }
+                  size="sm"
+                  className="w-full"
+                >
+                  <Icons.Plus className="h-4 w-4 mr-1" />
+                  {addingLocation ? "Adicionando..." : "Adicionar"}
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
